@@ -1,0 +1,18 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/menuHome" />
+
+    <item
+        android:id="@+id/menu_contato"
+        android:title="@string/menuContato"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_cadastro"
+        android:title="@string/menuCadastrar" />
+</menu>
