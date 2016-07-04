@@ -1,27 +1,21 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 
 /**
- * Activity Home.
+ * Activity responsável pela troca de mensagens entre os contatos.
  */
-public class HomeActivity extends AppCompatActivity {
+public class MensagemActivity extends AppCompatActivity {
 
-    private List<Usuario> contatos = new ArrayList<>();
+    private Usuario contatoSelecionado;
 
     private Usuario contatoLogado;
 
@@ -29,17 +23,17 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+        setContentView(R.layout.mensagem);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        contatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("usuarios");
+        contatoLogado = (Usuario) getIntent().getSerializableExtra("contatoLogado");
 
-        contatoLogado = (Usuario) getIntent().getSerializableExtra("usuarioLogado");
+        contatoSelecionado = (Usuario) getIntent().getSerializableExtra("contatoSelecionado");
 
-        TextView tv = (TextView) findViewById(R.id.mensagem_home);
-        tv.setText(contatoLogado.getNome());
+        Toast.makeText(getApplicationContext(), "Contato Logado: " + contatoLogado.getNome(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Contato Selecionado: " + contatoSelecionado.getNome(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -54,14 +48,6 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
-            case R.id.menu_contato:
-                Intent contatoIntent = new Intent(getApplicationContext(), ContatoActivity.class);
-                contatoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                contatoIntent.putExtra("contatos", (Serializable) contatos);
-                contatoIntent.putExtra("contatoLogado", contatoLogado);
-                startActivity(contatoIntent);
-                break;
 
             default:
                 Toast.makeText(getApplicationContext(), "Menu não mapeado", Toast.LENGTH_SHORT).show();

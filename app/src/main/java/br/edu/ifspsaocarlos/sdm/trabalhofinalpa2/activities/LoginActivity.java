@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,7 +32,7 @@ import cz.msebera.android.httpclient.Header;
 public class LoginActivity extends Activity {
 
     //Usuários do sistema.
-    public static final List<Usuario> finalUsuarios = new ArrayList<Usuario>();
+    public static final List<Usuario> finalContatos = new ArrayList<Usuario>();
     // Objeto de progresso de diálogo.
     ProgressDialog prgDialogo;
     // Mensagem de erro Text View.
@@ -63,6 +61,9 @@ public class LoginActivity extends Activity {
         prgDialogo.setMessage("Por favor, aguarde...");
 
         prgDialogo.setCancelable(false);
+
+        // Invocar o Web Service RESTful passando o parâmetro de id.
+        carregarContatosWS();
     }
 
     /**
@@ -77,20 +78,18 @@ public class LoginActivity extends Activity {
             Usuario usuario = new Usuario();
             usuario.setApelido(apelido);
 
-            // Invocar o Web Service RESTful passando o parâmetro de id.
-            carregarUsuariosWS();
-
             if (validarNomeUsuario(usuario)) {
                 Toast.makeText(getApplicationContext(), "Login feito com sucesso!.", Toast.LENGTH_LONG).show();
 
                 redirecionarActivityHome();
             } else {
-                Toast.makeText(getApplicationContext(), "Por favor, digite um apelido de usuário válido.", Toast.LENGTH_LONG).show();
+                mensagemErro.setText("Por favor, digite um apelido de usuário válido.");
+                //fgToast.makeText(getApplicationContext(), "Por favor, digite um apelido de usuário válido.", Toast.LENGTH_LONG).show();
             }
         }
         // Caso algum Edit View tenha ficado em branco.
         else {
-            Toast.makeText(getApplicationContext(), "Por favor, preencha o campo do apelido.", Toast.LENGTH_LONG).show();
+            mensagemErro.setText("Por favor, preencha o campo do apelido.");
         }
     }
 
@@ -106,7 +105,7 @@ public class LoginActivity extends Activity {
             return false;
         }
 
-        for (Usuario u : finalUsuarios) {
+        for (Usuario u : finalContatos) {
 
             if (u.getApelido().equals(usuario.getApelido())) {
                 usuarioLogado.setNome(u.getNome());
@@ -123,7 +122,7 @@ public class LoginActivity extends Activity {
     /**
      * Método que carrega os usuários do WebService RESTFul.
      */
-    public void carregarUsuariosWS() {
+    public void carregarContatosWS() {
 
         prgDialogo.show();
 
@@ -148,7 +147,7 @@ public class LoginActivity extends Activity {
                         usuario.setId(new Integer(jsonNoFilho.optString("id")));
                         usuario.setApelido(jsonNoFilho.optString("apelido"));
 
-                        finalUsuarios.add(usuario);
+                        finalContatos.add(usuario);
                     }
 
                 } catch (JSONException e) {
@@ -187,8 +186,8 @@ public class LoginActivity extends Activity {
 
         Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        homeIntent.putExtra("usuarios", (Serializable) finalUsuarios);
-        homeIntent.putExtra("usuarioLogado",  usuarioLogado);
+        homeIntent.putExtra("usuarios", (Serializable) finalContatos);
+        homeIntent.putExtra("usuarioLogado", usuarioLogado);
 
         startActivity(homeIntent);
     }

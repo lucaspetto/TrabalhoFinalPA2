@@ -1,45 +1,50 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities;
 
-import android.content.Intent;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
+import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.fragments.ContatoFragment;
 
 /**
- * Activity Home.
+ * Criado por Lucas Petto em 02/07/2016.
  */
-public class HomeActivity extends AppCompatActivity {
+public class ContatoActivity extends AppCompatActivity {
 
-    private List<Usuario> contatos = new ArrayList<>();
+    public static List<Usuario> listaContatos = new ArrayList<>();
 
-    private Usuario contatoLogado;
+    public static Usuario contatoLogado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+
+        setContentView(R.layout.contato);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        contatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("usuarios");
+        listaContatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("contatos");
 
-        contatoLogado = (Usuario) getIntent().getSerializableExtra("usuarioLogado");
+        contatoLogado = (Usuario) getIntent().getSerializableExtra("contatoLogado");
 
-        TextView tv = (TextView) findViewById(R.id.mensagem_home);
-        tv.setText(contatoLogado.getNome());
+        ContatoFragment frag = (ContatoFragment) getFragmentManager().findFragmentByTag("mainFrag");
+
+        if (frag == null) {
+            frag = new ContatoFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.rl_fragment_contato, frag, "mainFrag");
+            ft.commit();
+        }
     }
 
     @Override
@@ -52,16 +57,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
-
-            case R.id.menu_contato:
-                Intent contatoIntent = new Intent(getApplicationContext(), ContatoActivity.class);
-                contatoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                contatoIntent.putExtra("contatos", (Serializable) contatos);
-                contatoIntent.putExtra("contatoLogado", contatoLogado);
-                startActivity(contatoIntent);
-                break;
 
             default:
                 Toast.makeText(getApplicationContext(), "Menu não mapeado", Toast.LENGTH_SHORT).show();

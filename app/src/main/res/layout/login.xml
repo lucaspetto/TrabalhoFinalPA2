@@ -21,13 +21,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dip"
-            android:text="@string/login" />
+            android:text="@string/apelido" />
 
         <EditText
             android:id="@+id/login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Digite seu login" />
+            android:hint="Digite seu apelido" />
 
         <TextView
             android:id="@+id/login_erro"
@@ -48,13 +48,13 @@
             android:textColor="#fff" />
 
         <Button
-            android:id="@+id/botaoCadastrar"
+            android:id="@+id/botaoInformacao"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@null"
             android:onClick="enviarNovaSenha"
-            android:text="Esqueci minha senha"
+            android:text="Cadastrar um usuário"
             android:textColor="#228b22" />
     </LinearLayout>
 
