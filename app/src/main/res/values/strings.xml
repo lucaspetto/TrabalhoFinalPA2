@@ -20,4 +20,11 @@
     <string name="menuHome">Home</string>
     <string name="menuCadastrar">Cadastrar</string>
     <string name="menuContato">Contatos</string>
+    <string name="hint_login">Digite seu login</string>
+    <string name="esqueci_minha_senha">Esqueci minha senha</string>
+    <string name="btEnviar">Enviar</string>
+    <string name="mensagem_enviada_sucesso">Mensagem enviada com sucesso!</string>
+    <string name="base_url">http://www.nobile.pro.br/sdm/mensageiro/</string>
+    <string name="mensagem_enviada_erro">Erro no envio da mensagem!</string>
+    <string name="nova_mensagem_hint">Digite uma mensagem...</string>
 </resources>

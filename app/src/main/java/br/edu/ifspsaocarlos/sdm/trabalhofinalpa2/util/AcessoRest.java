@@ -1,9 +1,14 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.util;
 
 
+import android.content.res.Resources;
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
 
 /**
  * Classe que irá auxiliar na comunicação com o servidor RESTFul enviando e obtendo dados.
@@ -29,12 +34,12 @@ public final class AcessoRest {
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-
         cliente.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
 
+        Log.d("CHAT", "getAbsoluteUrl: " + BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
     }
 

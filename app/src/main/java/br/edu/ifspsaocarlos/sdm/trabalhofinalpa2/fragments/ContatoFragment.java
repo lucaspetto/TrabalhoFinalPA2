@@ -15,6 +15,7 @@ import java.util.List;
 
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities.ContatoActivity;
+import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities.ConversaActivity;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities.LoginActivity;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities.MensagemActivity;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.adapters.ContatoAdapter;
@@ -51,7 +52,7 @@ public class ContatoFragment extends Fragment implements RecyclerViewOnItemSelec
     @Override
     public void onItemSelecionado(View view, int posicao) {
 
-        Intent contatoIntent = new Intent(getActivity(), MensagemActivity.class);
+        Intent contatoIntent = new Intent(getActivity(), ConversaActivity.class);
         contatoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         contatoIntent.putExtra("contatoLogado", ContatoActivity.contatoLogado);
         contatoIntent.putExtra("contatoSelecionado", ContatoActivity.listaContatos.get(posicao));

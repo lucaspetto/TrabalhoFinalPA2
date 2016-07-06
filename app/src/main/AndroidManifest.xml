@@ -30,6 +30,10 @@
             android:name=".activities.MensagemActivity"
             android:label="@string/titulo_activity_mensagem">
         </activity>
+        <activity
+            android:name=".activities.ConversaActivity"
+            android:label="@string/titulo_activity_mensagem">
+        </activity>
 
     </application>
 
