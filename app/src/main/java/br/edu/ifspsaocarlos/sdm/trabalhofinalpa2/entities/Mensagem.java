@@ -1,5 +1,10 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class Mensagem implements Serializable, Comparable {
@@ -77,5 +82,15 @@ public class Mensagem implements Serializable, Comparable {
             return 1;
 
         return 0;
+    }
+
+    public static Mensagem parseMensagemFromJSON(JSONObject jsonMensagem) throws JSONException {
+        JSONObject jsonOrigem = (JSONObject) jsonMensagem.get("origem");
+
+        Gson gson = new Gson();
+        Mensagem mensagem = gson.fromJson(jsonMensagem.toString(), Mensagem.class);
+        mensagem.getOrigem().setNome(jsonOrigem.get("nome_completo").toString());
+
+        return mensagem;
     }
 }

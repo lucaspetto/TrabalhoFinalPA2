@@ -34,7 +34,15 @@
             android:name=".activities.ConversaActivity"
             android:label="@string/titulo_activity_mensagem">
         </activity>
-
+        <service
+            android:name=".services.NovaMensagemService"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="NOVA_MENSAGEM_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

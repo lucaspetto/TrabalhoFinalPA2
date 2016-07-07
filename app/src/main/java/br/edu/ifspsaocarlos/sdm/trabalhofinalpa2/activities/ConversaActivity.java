@@ -1,7 +1,6 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -80,7 +79,7 @@ public class ConversaActivity extends AppCompatActivity implements View.OnClickL
                                 mensagensJsonArray = s.getJSONArray("mensagens");
                                 for(int i=0; i< mensagensJsonArray.length(); i++){
                                     JSONObject jsonMensagem = mensagensJsonArray.getJSONObject(i);
-                                    Mensagem mensagem = parseMensagemFromJSON(jsonMensagem);
+                                    Mensagem mensagem = Mensagem.parseMensagemFromJSON(jsonMensagem);
 
                                     mensagens.add(mensagem);
                                 }
@@ -95,7 +94,7 @@ public class ConversaActivity extends AppCompatActivity implements View.OnClickL
                                                     mensagensJsonArray = s.getJSONArray("mensagens");
                                                     for(int i=0; i< mensagensJsonArray.length(); i++){
                                                         JSONObject jsonMensagem = mensagensJsonArray.getJSONObject(i);
-                                                        Mensagem mensagem = parseMensagemFromJSON(jsonMensagem);
+                                                        Mensagem mensagem = Mensagem.parseMensagemFromJSON(jsonMensagem);
                                                         mensagens.add(mensagem);
                                                     }
 
@@ -128,16 +127,6 @@ public class ConversaActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    @NonNull
-    private Mensagem parseMensagemFromJSON(JSONObject jsonMensagem) throws JSONException {
-        JSONObject jsonOrigem = (JSONObject) jsonMensagem.get("origem");
-
-        Gson gson = new Gson();
-        Mensagem mensagem = gson.fromJson(jsonMensagem.toString(), Mensagem.class);
-        mensagem.getOrigem().setNome(jsonOrigem.get("nome_completo").toString());
-        return mensagem;
-    }
-
     @Override
     public void onClick(View v) {
         if(v == btNovaMensagem){
@@ -159,7 +148,7 @@ public class ConversaActivity extends AppCompatActivity implements View.OnClickL
                         new Response.Listener<JSONObject>() {
                             public void onResponse(JSONObject s) {
                                 try {
-                                    Mensagem mensagem = parseMensagemFromJSON(jsonBody);
+                                    Mensagem mensagem = Mensagem.parseMensagemFromJSON(jsonBody);
                                     mensagens.add(mensagem);
                                     runOnUiThread(new Runnable() {
                                         @Override

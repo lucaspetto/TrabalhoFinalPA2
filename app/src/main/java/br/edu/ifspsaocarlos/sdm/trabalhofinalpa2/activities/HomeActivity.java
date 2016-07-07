@@ -1,9 +1,11 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 public class HomeActivity extends AppCompatActivity {
 
     private List<Usuario> contatos = new ArrayList<>();
+    private Intent serviceIntent;
 
     private Usuario contatoLogado;
 
@@ -40,6 +43,12 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView tv = (TextView) findViewById(R.id.mensagem_home);
         tv.setText(contatoLogado.getNome());
+
+        // Inicia serviço de novas mensages
+        //serviceIntent = new Intent("NOVA_MENSAGEM_SERVICE");
+        //serviceIntent.putExtra("contatos", (Serializable) contatos);
+        //serviceIntent.putExtra("contatoLogado", contatoLogado);
+        //startService(serviceIntent);
     }
 
     @Override
@@ -69,5 +78,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    protected void onDestroy() {
+        stopService(serviceIntent);
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.cancelAll();
+        super.onDestroy();
     }
 }
