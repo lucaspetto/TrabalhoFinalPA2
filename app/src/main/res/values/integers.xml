@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="tempo_inatividade_servico">1000</integer>
+    <integer name="tempo_inatividade_servico">30000</integer>
+    <integer name="tempo_entre_requisicoes">10000</integer>
 </resources>

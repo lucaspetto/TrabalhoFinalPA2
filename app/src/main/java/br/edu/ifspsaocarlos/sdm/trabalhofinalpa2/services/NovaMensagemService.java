@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
+import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities.ContatoActivity;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities.ConversaActivity;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Mensagem;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
@@ -36,16 +38,13 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
  */
 public class NovaMensagemService  extends Service implements Runnable {
     private boolean appAberta;
-    private boolean primeiraBusca;
     private HashMap<Integer, Integer> ultimaMensagemRecebida;
-    private List<Mensagem> novasMensagens;
-    private Usuario usuarioLogado;
+    private Usuario contatoLogado;
     private List<Usuario> contatos;
 
     public void onCreate() {
         super.onCreate();
         appAberta = true;
-        primeiraBusca = true;
 
         new Thread(this).start();
     }
@@ -53,47 +52,35 @@ public class NovaMensagemService  extends Service implements Runnable {
     private void inicializaUltimaMensagem() {
         ultimaMensagemRecebida = new HashMap<>();
         for (int i=0; i<contatos.size(); i++){
-            ultimaMensagemRecebida.put(i, 0);
+            Usuario usuario = contatos.get(i);
+            ultimaMensagemRecebida.put(usuario.getId(), 0);
         }
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        usuarioLogado = (Usuario) intent.getSerializableExtra("contatoLogado");
-        contatos = (ArrayList<Usuario>) intent.getSerializableExtra("contatos");
-        novasMensagens = new ArrayList<>();
-        inicializaUltimaMensagem();
+        try {
+            contatoLogado = (Usuario) intent.getSerializableExtra("contatoLogado");
+            contatos = (ArrayList<Usuario>) intent.getSerializableExtra("contatos");
+
+            // restringindo aos 5 primeiros elementos - utilização para testes
+            /*for(int i=contatos.size()-1; i>4; i--){
+                contatos.remove(i);
+            }*/
+
+            inicializaUltimaMensagem();
+        }catch (Exception e){
+            Log.d("CHAT", "onStartCommand: Erro de leitura dos extras");
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void run() {
-        novasMensagens = new ArrayList<>();
         while (appAberta) {
             try {
                 Thread.sleep(getResources().getInteger(R.integer.tempo_inatividade_servico));
                 buscaNovasMensagens();
-                if (!primeiraBusca && novasMensagens.size() > 0) {
-                    NotificationManager nm = (NotificationManager)
-                            getSystemService(NOTIFICATION_SERVICE);
-                    Intent intent = new Intent(this, ConversaActivity.class);
-                    intent.putExtra("notificacao_nova_mensagem",
-                            getString(R.string.nova_mensagem_notify));
-                    PendingIntent p = PendingIntent.getActivity(this, 0, intent, 0);
-                    Notification.Builder builder = new Notification.Builder(this);
-                    builder.setSmallIcon(R.drawable.ic_nova_mensagem);
-                    builder.setTicker(getString(R.string.nova_mensagem_notify));
-                    builder.setContentTitle(getString(R.string.nova_mensagem_notify));
-                    builder.setContentText(getString(R.string.nova_mensagem_notify));
-                    builder.setWhen(System.currentTimeMillis());
-                    builder.setContentIntent(p);
-                    builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                            R.drawable.ic_mensageiro));
-                    Notification notification = builder.build();
-                    notification.vibrate = new long[] {100, 250};
-                    nm.notify(R.mipmap.ic_launcher, notification);
-                }
-                primeiraBusca = false;
             } catch (InterruptedException e) {
                 Log.e("CHAT", "Erro ao recuperar mensagens");
             }
@@ -105,22 +92,31 @@ public class NovaMensagemService  extends Service implements Runnable {
         RequestQueue queue = Volley.newRequestQueue(NovaMensagemService.this);
         try {
             for(int i=0; i<contatos.size(); i++){
+                Thread.sleep(getResources().getInteger(R.integer.tempo_entre_requisicoes));
                 // url = /mensagem/ultimaMensagem/origem/destino
                 // url = /mensagem/ultimaMensagem/contato/usuarioLogado
-                String url = getString(R.string.base_url) + "/mensagem/" + ultimaMensagemRecebida.get(i) + "/" + i + "/" + usuarioLogado.getId();
-                final int finalI = i;
+                String url = getString(R.string.base_url) + "/mensagem/" + ultimaMensagemRecebida.get(i) + "/" + contatos.get(i).getId() + "/" + contatoLogado.getId();
+                Log.d("CHAT", "buscaNovasMensagens: " + url);
+                final Usuario contatoSelecionado = contatos.get(i);
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>() {
                             public void onResponse(JSONObject s) {
                                 JSONArray jsonArray;
                                 try {
                                     jsonArray = s.getJSONArray("mensagens");
-                                    for(int j=0; j<jsonArray.length(); j++){
-                                        JSONObject jsonMensagem = jsonArray.getJSONObject(j);
+                                    // Se houver novas mensagens do contato, guarda id de origem
+                                    if(jsonArray.length() > 0){
+                                        // Busca mensagem recebida mais recente
+                                        JSONObject jsonMensagem = jsonArray.getJSONObject(jsonArray.length()-1);
                                         Mensagem mensagem = Mensagem.parseMensagemFromJSON(jsonMensagem);
 
-                                        ultimaMensagemRecebida.put(finalI, mensagem.getId());
-                                        novasMensagens.add(mensagem);
+                                        // Se última mensagem recebida não é a mais recente, há novas mensagens
+                                        if(ultimaMensagemRecebida.get(contatoSelecionado.getId()) < mensagem.getId()){
+                                            // atualiza última mensagem recebida
+                                            ultimaMensagemRecebida.put(contatoSelecionado.getId(), mensagem.getId());
+                                            // adiciona notificação de contat com novas mensagens
+                                            inserirNofiticação(contatoSelecionado);
+                                        }
                                     }
                                 }
                                 catch (JSONException je) {
@@ -138,6 +134,36 @@ public class NovaMensagemService  extends Service implements Runnable {
             e.printStackTrace();
         }
 
+    }
+
+    private void inserirNofiticação(Usuario contato) {
+        Log.d("CHAT", "inserirNofiticação: " + contato.getNome());
+        NotificationManager nm = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this, ConversaActivity.class);
+        intent.putExtra("notificacao_nova_mensagem",
+                getString(R.string.nova_mensagem_notify));
+        intent.putExtra("contatoLogado", contatoLogado);
+        intent.putExtra("contatoDestino", contato);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(ConversaActivity.class);
+        stackBuilder.addNextIntent(intent);
+        //PendingIntent p = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent p =
+                stackBuilder.getPendingIntent(contato.getId(), PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setSmallIcon(R.drawable.ic_nova_mensagem);
+        builder.setTicker(getString(R.string.nova_mensagem_notify));
+        builder.setContentTitle(getString(R.string.nova_mensagem_title));
+        builder.setContentText(contato.getNome());
+        builder.setWhen(System.currentTimeMillis());
+        builder.setContentIntent(p);
+        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                R.drawable.ic_mensageiro));
+        Notification notification = builder.build();
+        notification.vibrate = new long[] {100, 250};
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        nm.notify(contato.getId(), notification);
     }
 
     @Nullable

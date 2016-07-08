@@ -28,15 +28,15 @@ import java.util.Collections;
 import java.util.List;
 
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
-import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.adapters.MensagemArrayAdapter;
+import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.adapters.MensagemBaseAdapter;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Mensagem;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 
 public class ConversaActivity extends AppCompatActivity implements View.OnClickListener {
 
     List<Mensagem> mensagens;
-    public MensagemArrayAdapter adapter;
-    private ListView listMensagens;
+    private MensagemBaseAdapter adapter;
+    public ListView listMensagens;
     private Button btNovaMensagem;
     private EditText novaMensagem;
     private RequestQueue queue;
@@ -57,7 +57,7 @@ public class ConversaActivity extends AppCompatActivity implements View.OnClickL
         btNovaMensagem.setOnClickListener(this);
 
         origem = (Usuario) getIntent().getSerializableExtra("contatoLogado");
-        destino = (Usuario) getIntent().getSerializableExtra("contatoSelecionado");
+        destino = (Usuario) getIntent().getSerializableExtra("contatoDestino");
 
         listarMensagens();
     }
@@ -129,57 +129,60 @@ public class ConversaActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(v == btNovaMensagem){
+        if(v == btNovaMensagem) {
             final Mensagem mensagem = new Mensagem();
-            mensagem.setOrigemId(origem.getId());
-            mensagem.setDestinoId(destino.getId());
-            mensagem.setAssunto("Teste ACG");
-            mensagem.setCorpo(novaMensagem.getText().toString());
+            new Thread() {
+                public void run() {
+                    mensagem.setOrigemId(origem.getId());
+                    mensagem.setDestinoId(destino.getId());
+                    mensagem.setAssunto("");
+                    mensagem.setCorpo(novaMensagem.getText().toString());
 
-            String url = getString(R.string.base_url) + "/mensagem";
+                    String url = getString(R.string.base_url) + "/mensagem";
 
-            try {
-                Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-                final JSONObject jsonBody = new JSONObject(gson.toJson(mensagem));
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                        Request.Method.POST,
-                        url,
-                        jsonBody,
-                        new Response.Listener<JSONObject>() {
-                            public void onResponse(JSONObject s) {
-                                try {
-                                    Mensagem mensagem = Mensagem.parseMensagemFromJSON(jsonBody);
-                                    mensagens.add(mensagem);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            bindListView();
-                                        }
-                                    });
-                                    Toast.makeText(ConversaActivity.this, R.string.mensagem_enviada_sucesso,
-                                        Toast.LENGTH_SHORT).show();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            public void onErrorResponse(VolleyError volleyError) {
-                                Toast.makeText(ConversaActivity.this, R.string.mensagem_enviada_erro,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                queue.add(jsonObjectRequest);
-            }catch (Exception e ) {
-                Log.e("CHAT", String.valueOf(R.string.mensagem_enviada_erro));
-            }
+                    try {
+                        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+                        final JSONObject jsonBody = new JSONObject(gson.toJson(mensagem));
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                                Request.Method.POST,
+                                url,
+                                jsonBody,
+                                new Response.Listener<JSONObject>() {
+                                    public void onResponse(JSONObject novaMensagemJSON) {
+                                        final Mensagem mensagem = new Gson().fromJson(novaMensagemJSON.toString(), Mensagem.class);
+                                        mensagem.setOrigem(origem);
+                                        mensagem.setDestino(destino);
+                                        mensagens.add(mensagem);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                adapter.notifyDataSetChanged();
+                                                listMensagens.setSelection(adapter.getCount() - 1);
+                                            }
+                                        });
+                                        Toast.makeText(ConversaActivity.this, R.string.mensagem_enviada_sucesso,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    public void onErrorResponse(VolleyError volleyError) {
+                                        Toast.makeText(ConversaActivity.this, R.string.mensagem_enviada_erro,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                        queue.add(jsonObjectRequest);
+                    } catch (Exception e) {
+                        Log.e("CHAT", String.valueOf(R.string.mensagem_enviada_erro));
+                    }
 
+                }
+            }.start();
         }
     }
 
     private void bindListView() {
         Collections.sort(mensagens);
-        adapter = new MensagemArrayAdapter(getApplicationContext(), mensagens);
+        adapter = new MensagemBaseAdapter(getApplicationContext(), mensagens);
         listMensagens.setAdapter(adapter);
     }
 }

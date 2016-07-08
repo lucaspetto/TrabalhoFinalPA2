@@ -32,6 +32,7 @@
         </activity>
         <activity
             android:name=".activities.ConversaActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:label="@string/titulo_activity_mensagem">
         </activity>
         <service

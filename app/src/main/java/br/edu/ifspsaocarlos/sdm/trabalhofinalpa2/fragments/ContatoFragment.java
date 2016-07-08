@@ -55,7 +55,7 @@ public class ContatoFragment extends Fragment implements RecyclerViewOnItemSelec
         Intent contatoIntent = new Intent(getActivity(), ConversaActivity.class);
         contatoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         contatoIntent.putExtra("contatoLogado", ContatoActivity.contatoLogado);
-        contatoIntent.putExtra("contatoSelecionado", ContatoActivity.listaContatos.get(posicao));
+        contatoIntent.putExtra("contatoDestino", ContatoActivity.listaContatos.get(posicao));
         startActivity(contatoIntent);;
 
         ContatoActivity.listaContatos.get(posicao);

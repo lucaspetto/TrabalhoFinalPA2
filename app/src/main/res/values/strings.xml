@@ -28,4 +28,5 @@
     <string name="mensagem_enviada_erro">Erro no envio da mensagem!</string>
     <string name="nova_mensagem_hint">Digite uma mensagem...</string>
     <string name="nova_mensagem_notify">Você tem novas mensagens!</string>
+    <string name="nova_mensagem_title">Novas mensagem recebida de</string>
 </resources>

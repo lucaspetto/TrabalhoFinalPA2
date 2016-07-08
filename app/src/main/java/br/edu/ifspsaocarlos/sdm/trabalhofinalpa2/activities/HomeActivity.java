@@ -45,10 +45,10 @@ public class HomeActivity extends AppCompatActivity {
         tv.setText(contatoLogado.getNome());
 
         // Inicia serviço de novas mensages
-        //serviceIntent = new Intent("NOVA_MENSAGEM_SERVICE");
-        //serviceIntent.putExtra("contatos", (Serializable) contatos);
-        //serviceIntent.putExtra("contatoLogado", contatoLogado);
-        //startService(serviceIntent);
+        serviceIntent = new Intent("NOVA_MENSAGEM_SERVICE");
+        serviceIntent.putExtra("contatos", (Serializable) contatos);
+        serviceIntent.putExtra("contatoLogado", contatoLogado);
+        startService(serviceIntent);
     }
 
     @Override
