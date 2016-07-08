@@ -17,6 +17,15 @@ public class Mensagem implements Serializable, Comparable {
     private Usuario origem;
     private Usuario destino;
 
+    public Mensagem(Usuario origem, Usuario destino, String assunto, String corpo) {
+        this.origem = origem;
+        this.origemId = origem.getId();
+        this.destino = destino;
+        this.destinoId = destino.getId();
+        this.assunto = assunto;
+        this.corpo = corpo;
+    }
+
     public int getId() {
         return id;
     }

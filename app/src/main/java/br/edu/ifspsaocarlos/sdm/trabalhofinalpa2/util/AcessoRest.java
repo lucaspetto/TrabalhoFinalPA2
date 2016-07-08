@@ -1,14 +1,11 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.util;
 
 
-import android.content.res.Resources;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
-import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
 
 /**
  * Classe que irá auxiliar na comunicação com o servidor RESTFul enviando e obtendo dados.

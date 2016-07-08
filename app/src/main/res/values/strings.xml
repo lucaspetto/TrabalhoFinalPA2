@@ -29,4 +29,5 @@
     <string name="nova_mensagem_hint">Digite uma mensagem...</string>
     <string name="nova_mensagem_notify">Você tem novas mensagens!</string>
     <string name="nova_mensagem_title">Novas mensagem recebida de</string>
+    <string name="erro_requisicao">Ocorreu um erro na requisição</string>
 </resources>

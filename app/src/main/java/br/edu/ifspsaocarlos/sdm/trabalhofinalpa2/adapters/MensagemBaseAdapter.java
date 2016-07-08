@@ -28,10 +28,6 @@ public class MensagemBaseAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void add(Mensagem mensagem){
-        this.mensagens.add(mensagem);
-    }
-
     @Override
     public int getCount() {
         return mensagens.size();
