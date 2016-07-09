@@ -4,29 +4,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Classe com métodos utilitários.
+ * Classe de utilitários.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class Util {
-    //Email Pattern
-    private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static Pattern pattern;
-
-    private static Matcher matcher;
-
-    /**
-     * Validação de email.
-     *
-     * @return true caso o email seja válido.
-     */
-    public static boolean isEmailValido(String email) {
-
-        pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(email);
-
-        return matcher.matches();
-    }
 
     /**
      * Verifica se o ID é válido.

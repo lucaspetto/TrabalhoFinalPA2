@@ -15,6 +15,12 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.interfaces.ITrocaDeMensagem;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.util.TrocaDeMensagemServiceController;
 
+/**
+ * Activity responsável pela conversa entre os contatos.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
+ */
 public class ConversaActivity extends AppCompatActivity implements View.OnClickListener {
 
     private MensagemBaseAdapter adapter;

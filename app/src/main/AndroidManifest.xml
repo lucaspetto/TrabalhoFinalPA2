@@ -27,13 +27,13 @@
             android:label="@string/titulo_activity_contato">
         </activity>
         <activity
-            android:name=".activities.MensagemActivity"
-            android:label="@string/titulo_activity_mensagem">
-        </activity>
-        <activity
             android:name=".activities.ConversaActivity"
             android:parentActivityName=".activities.HomeActivity"
             android:label="@string/titulo_activity_mensagem">
+        </activity>
+        <activity
+            android:name=".activities.CadastroContatoActivity"
+            android:label="@string/titulo_activity_cadastro">
         </activity>
         <service
             android:name=".services.NovaMensagemService"

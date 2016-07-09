@@ -16,6 +16,9 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.interfaces.RecyclerViewOnItemSe
 
 /**
  * Adapter de contato.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.MeuViewHolder> {
 

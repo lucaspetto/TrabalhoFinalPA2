@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dip">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/nome" />
+
+        <EditText
+            android:id="@+id/cadastro_nome_completo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite o nome completo" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/apelido" />
+
+        <EditText
+            android:id="@+id/cadastro_apelido"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite o apelido" />
+
+        <TextView
+            android:id="@+id/mensagem_erro"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dip"
+            android:textColor="#e30000"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:background="#1578c9"
+            android:onClick="cadastrarContato"
+            android:text="@string/botaoCadastrar"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/btnLinkToLoginScreen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:background="@null"
+            android:onClick="redirecionarLogin"
+            android:text="Login"
+            android:textColor="#228b22"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</ScrollView>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -20,10 +19,14 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 
 /**
  * Activity Home.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class HomeActivity extends AppCompatActivity {
 
     private List<Usuario> contatos = new ArrayList<>();
+
     private Intent serviceIntent;
 
     private Usuario contatoLogado;
@@ -37,9 +40,13 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        contatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("usuarios");
+        contatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("contatos");
 
-        contatoLogado = (Usuario) getIntent().getSerializableExtra("usuarioLogado");
+        contatoLogado = (Usuario) getIntent().getSerializableExtra("contatoLogado");
+
+        if (contatoLogado == null || contatoLogado.getNome() == null){
+            redirecionaLogin();
+        }
 
         TextView tv = (TextView) findViewById(R.id.mensagem_home);
         tv.setText(contatoLogado.getNome());
@@ -73,7 +80,6 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             default:
-                Toast.makeText(getApplicationContext(), "Menu não mapeado", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -85,5 +91,11 @@ public class HomeActivity extends AppCompatActivity {
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.cancelAll();
         super.onDestroy();
+    }
+
+    private void redirecionaLogin(){
+        Intent contatoIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        contatoIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(contatoIntent);
     }
 }

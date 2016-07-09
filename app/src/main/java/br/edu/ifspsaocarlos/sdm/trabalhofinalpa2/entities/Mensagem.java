@@ -7,6 +7,12 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 
+/**
+ * Classe que representa a mensagem.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
+ */
 public class Mensagem implements Serializable, Comparable {
     private int id;
     private int origemId;

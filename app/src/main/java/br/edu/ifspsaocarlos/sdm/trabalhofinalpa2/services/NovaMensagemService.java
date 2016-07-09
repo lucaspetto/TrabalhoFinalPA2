@@ -34,7 +34,10 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Mensagem;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 
 /**
- * Created by Anderson Garcia
+ * Service de verificação de novas mensagens.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class NovaMensagemService  extends Service implements Runnable {
     private boolean appAberta;
@@ -85,7 +88,6 @@ public class NovaMensagemService  extends Service implements Runnable {
                 Log.e("CHAT", "Erro ao recuperar mensagens");
             }
         }
-
     }
 
     private void buscaNovasMensagens() {

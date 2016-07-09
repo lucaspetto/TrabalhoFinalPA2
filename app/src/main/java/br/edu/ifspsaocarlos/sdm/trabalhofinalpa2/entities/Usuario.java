@@ -1,9 +1,17 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities;
 
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
  * Classe que representa o usuário do sistema.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class Usuario implements Serializable{
 

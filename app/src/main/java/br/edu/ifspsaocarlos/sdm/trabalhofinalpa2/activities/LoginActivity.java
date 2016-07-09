@@ -27,7 +27,10 @@ import cz.msebera.android.httpclient.Header;
 
 
 /**
- * Activity de login.
+ * Activity responsável pelo login do usuário.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class LoginActivity extends Activity {
 
@@ -186,20 +189,21 @@ public class LoginActivity extends Activity {
 
         Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        homeIntent.putExtra("usuarios", (Serializable) finalContatos);
-        homeIntent.putExtra("usuarioLogado", usuarioLogado);
+        homeIntent.putExtra("contatos", (Serializable) finalContatos);
+        homeIntent.putExtra("contatoLogado", usuarioLogado);
 
         startActivity(homeIntent);
     }
 
     /**
-     * Método invocado para enviar nova senha.
-     *
-     * @param view
+     * Método invocado para cadastrar um novo usuário.
      */
     public void enviarNovaSenha(View view) {
 
-        Toast.makeText(getApplicationContext(), "Método não implementado", Toast.LENGTH_SHORT).show();
+        Intent cadastroIntent = new Intent(getApplicationContext(), CadastroContatoActivity.class);
+        cadastroIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        startActivity(cadastroIntent);
     }
 
 }

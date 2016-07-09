@@ -9,6 +9,9 @@ import com.loopj.android.http.RequestParams;
 
 /**
  * Classe que irá auxiliar na comunicação com o servidor RESTFul enviando e obtendo dados.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public final class AcessoRest {
 
@@ -21,12 +24,14 @@ public final class AcessoRest {
     private static AsyncHttpClient cliente = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-
         cliente.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void get(String url, AsyncHttpResponseHandler responseHandler) {
+    public static void put(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){
+        cliente.put(getAbsoluteUrl(url),params,responseHandler);
+    }
 
+    public static void get(String url, AsyncHttpResponseHandler responseHandler) {
         cliente.get(getAbsoluteUrl(url), responseHandler);
     }
 
@@ -34,9 +39,7 @@ public final class AcessoRest {
         cliente.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    private static String getAbsoluteUrl(String relativeUrl) {
-
-        Log.d("CHAT", "getAbsoluteUrl: " + BASE_URL + relativeUrl);
+    public static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
     }
 

@@ -13,7 +13,10 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.R;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Mensagem;
 
 /**
- * Created by Anderson on 08/07/2016.
+ * Adapter de mensagem.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class MensagemBaseAdapter extends BaseAdapter {
     private LayoutInflater inflater;

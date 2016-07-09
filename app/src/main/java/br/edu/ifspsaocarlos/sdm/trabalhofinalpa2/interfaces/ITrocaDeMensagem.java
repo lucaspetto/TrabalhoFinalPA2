@@ -6,7 +6,10 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Mensagem;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 
 /**
- * Created by Anderson on 08/07/2016.
+ * Interface de troca de mensagens.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public interface ITrocaDeMensagem {
     List<Mensagem> getMensagens();

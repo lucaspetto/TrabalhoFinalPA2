@@ -1,6 +1,7 @@
 package br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.activities;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +18,14 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.fragments.ContatoFragment;
 
 /**
- * Criado por Lucas Petto em 02/07/2016.
+ * Activity responsável pelos contatos.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public class ContatoActivity extends AppCompatActivity {
 
-    public static List<Usuario> listaContatos = new ArrayList<>();
+    public static List<Usuario> contatos = new ArrayList<>();
 
     public static Usuario contatoLogado;
 
@@ -33,7 +38,7 @@ public class ContatoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        listaContatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("contatos");
+        contatos = (ArrayList<Usuario>) getIntent().getSerializableExtra("contatos");
 
         contatoLogado = (Usuario) getIntent().getSerializableExtra("contatoLogado");
 
@@ -57,10 +62,17 @@ public class ContatoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
 
+            case R.id.menu_home:
+                Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                homeIntent.putExtra("contatos", (Serializable) contatos);
+                homeIntent.putExtra("contatoLogado", contatoLogado);
+                startActivity(homeIntent);
+                break;
+
             default:
-                Toast.makeText(getApplicationContext(), "Menu não mapeado", Toast.LENGTH_SHORT).show();
                 break;
         }
 

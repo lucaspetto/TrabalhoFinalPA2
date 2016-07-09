@@ -12,7 +12,4 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/menu_cadastro"
-        android:title="@string/menuCadastrar" />
 </menu>

@@ -27,7 +27,10 @@ import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.entities.Usuario;
 import br.edu.ifspsaocarlos.sdm.trabalhofinalpa2.interfaces.ITrocaDeMensagem;
 
 /**
- * Created by Anderson on 08/07/2016.
+ * Controller de envio e recebimento de mensagens.
+ *
+ * @author Anderson Canale Garcia
+ * @author Lucas Petto
  */
 public abstract class TrocaDeMensagemServiceController implements ITrocaDeMensagem {
     private final Context context;
